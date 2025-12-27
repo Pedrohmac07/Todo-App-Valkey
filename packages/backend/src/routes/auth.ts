@@ -68,9 +68,12 @@ export const authRoutes = new Elysia()
 
     const token = await jwt.sign({ id: user.id });
 
+
+    const isProduction = process.env.NODE_ENV === 'production';
     auth.set({
       value: token,
       httpOnly: true,
+      secure: isProduction,
       maxAge: 7 * 86400, // 7 days
       path: '/',
     });
@@ -111,4 +114,34 @@ export const authRoutes = new Elysia()
     body: t.Object({
       name: t.Optional(t.String()),
     })
-  });
+  })
+
+  .get('/me', async ({ jwt, cookie: { auth }, set }) => {
+    const payload = await jwt.verify(auth.value);
+
+    if (!payload) {
+      set.status = 401;
+      return { error: 'Unauthorized' }
+    }
+
+    const userRaw = await db.get(`user:${payload.id}`)
+    if (!userRaw) {
+      set.status = 404;
+      return { error: 'User not found' }
+    }
+
+    const user: User = JSON.parse(userRaw);
+
+    return {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      createdAt: user.createdAt
+    };
+  })
+
+  .post('sign-out', ({ cookie: { auth } }) => {
+    auth?.remove();
+
+    return { message: 'Logged Out' };
+  })

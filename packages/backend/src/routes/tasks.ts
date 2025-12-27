@@ -33,6 +33,25 @@ export const tasksRoutes = new Elysia({ prefix: '/tasks' })
       .map((item) => JSON.parse(item as string));
   })
 
+  .get('/search', async ({ query, userId }) => {
+    const searchTerm = query.q?.toLowerCase();
+
+    if (!searchTerm) return [];
+
+    const taskIds = await db.smembers(`user:${userId}:tasks`);
+    if (taskIds.length === 0) return [];
+
+    const tasksJSON = await db.mget(...taskIds.map(id => `task:${id}`));
+
+    return tasksJSON
+      .filter((item) => item !== null)
+      .map((item) => JSON.parse(item as string) as Task)
+      .filter((task) =>
+        task.title.toLowerCase().includes(searchTerm) ||
+        task.content.toLowerCase().includes(searchTerm)
+      )
+  })
+
   .post('/', async ({ body, userId }) => {
     const taskId = crypto.randomUUID();
     const newTask: Task = {
@@ -92,4 +111,5 @@ export const tasksRoutes = new Elysia({ prefix: '/tasks' })
     await db.srem(`user:${userId}:tasks`, id);
 
     return { message: "Deleted", id };
-  });
+  })
+

@@ -33,4 +33,80 @@ export const authRoutes = new Elysia()
       email: t.String(),
       password: t.String()
     })
+  })
+
+  .post('/sign-in', async ({ body, set }) => {
+    const userId = await db.get(`user:email:${body.email}`);
+
+    if (!userId) {
+      set.status = 401;
+      return { error: 'Invalid email or password' };
+    }
+
+    const userRaw = await db.get(`user:${userId}`);
+    if (!userRaw) {
+      set.status = 401;
+      return { error: 'Invalid email or password' };
+    }
+
+    const user: User = JSON.parse(userRaw);
+
+    const isPasswordValid = await Bun.password.verify(body.password, user.password);
+    if (!isPasswordValid) {
+      set.status = 401;
+      return { error: 'Invalid email or password' };
+    }
+
+    console.log('User logged in:', user.email);
+    return { message: "Login successful", userId: user.id, name: user.name };
+  }, {
+    body: t.Object({
+      email: t.String(),
+      password: t.String()
+    })
+  })
+
+  .patch('/user', async ({ body, set }) => {
+    const userRaw = await db.get(`user:${body.userId}`);
+
+    if (!userRaw) {
+      set.status = 404;
+      return { error: 'User not found' };
+    }
+
+    const oldUser: User = JSON.parse(userRaw);
+
+    const updatedUser: User = {
+      ...oldUser,
+      name: body.name ?? oldUser.name,
+    };
+
+    await db.set(`user:${updatedUser.id}`, JSON.stringify(updatedUser));
+
+    return { message: "User updated", user: updatedUser };
+  }, {
+    body: t.Object({
+      userId: t.String(),
+      name: t.Optional(t.String()),
+    })
+  })
+
+  .delete('/user', async ({ body, set }) => {
+    const userRaw = await db.get(`user:${body.userId}`);
+
+    if (!userRaw) {
+      set.status = 404;
+      return { error: 'User not found' };
+    }
+
+    const user: User = JSON.parse(userRaw);
+
+    await db.del(`user:${user.id}`);
+    await db.del(`user:email:${user.email}`);
+
+    return { message: "User deleted successfully" };
+  }, {
+    body: t.Object({
+      userId: t.String()
+    })
   });

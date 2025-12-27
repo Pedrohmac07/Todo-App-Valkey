@@ -14,5 +14,6 @@ Alvo de estrutura de arquivos do repositorio:
 
 Ambiente Frameworks e ferramentas:
 Elysia
+IoRedis
 
 

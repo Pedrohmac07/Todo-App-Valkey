@@ -7,7 +7,7 @@
     "./packages/*"
   ],
   "scripts": {
-    "start": "bun ./packages/backend/index.ts"
+    "start": "bun ./packages/backend/src/index.ts"
   },
   "devDependencies": {
     "@types/bun": "latest"

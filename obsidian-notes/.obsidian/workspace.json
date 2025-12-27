@@ -1,0 +1,211 @@
+{
+  "main": {
+    "id": "2fc0729940ce5a6f",
+    "type": "split",
+    "children": [
+      {
+        "id": "07f1750f49efd8e9",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "bcf3d0313125c4e8",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Segunda etapa Infraestrutura e Ambiente.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Segunda etapa Infraestrutura e Ambiente"
+            }
+          }
+        ]
+      },
+      {
+        "id": "d0332a5c48482b99",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "b6a5b95a1f855a05",
+            "type": "leaf",
+            "state": {
+              "type": "graph",
+              "state": {},
+              "icon": "lucide-git-fork",
+              "title": "Visualização de diagrama de grafo"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "b1bde133741c2e85",
+    "type": "split",
+    "children": [
+      {
+        "id": "d63e4e9ce09c9cb0",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "545fda4fe1b5f878",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Explorador de ficheiros"
+            }
+          },
+          {
+            "id": "a8e3e82371d3b663",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Procurar"
+            }
+          },
+          {
+            "id": "819b01a9fc608b65",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "4aac841f9107ea22",
+    "type": "split",
+    "children": [
+      {
+        "id": "ffcec4ac58d974e9",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "f1fa7396d41b6c95",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "Segunda etapa Infraestrutura e Ambiente.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks para Segunda etapa Infraestrutura e Ambiente"
+            }
+          },
+          {
+            "id": "e98083e553678a1c",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "Welcome.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Links externos de Welcome"
+            }
+          },
+          {
+            "id": "72d0d9ac7c5c77df",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "1fd453b7f79e2e05",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "All properties"
+            }
+          },
+          {
+            "id": "0c3dba20e20fddad",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "Welcome.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Índice de Welcome"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Abrir Quick Switcher": false,
+      "graph:Abrir Visualização de diagrama de grafo": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Abrir nota de hoje": false,
+      "templates:Inserir templates": false,
+      "command-palette:Abrir paleta de comando": false,
+      "bases:Create new base": false
+    }
+  },
+  "active": "bcf3d0313125c4e8",
+  "lastOpenFiles": [
+    "Segunda etapa Infraestrutura e Ambiente.md",
+    "Sem título.base",
+    "Etapas do Projeto.md",
+    "Infraestrutura e Ambiente.md",
+    "Primeira etapa Modelagem de Dados.md",
+    "Modelagem de Dados.md"
+  ]
+}

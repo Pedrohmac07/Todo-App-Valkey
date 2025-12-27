@@ -1,8 +1,19 @@
 import { Elysia, t } from 'elysia';
 import { db } from '../database/connection';
 import { type User } from '../types/user';
+import { jwt } from '@elysiajs/jwt';
 
 export const authRoutes = new Elysia()
+  .use(
+    jwt({
+      name: 'jwt',
+      secret: process.env.JWT_SECRET!,
+      schema: t.Object({
+        id: t.String()
+      })
+    })
+  )
+
   .post('/sign-up', async ({ body, set }) => {
     const emailExists = await db.exists(`user:email:${body.email}`);
 
@@ -24,8 +35,6 @@ export const authRoutes = new Elysia()
     await db.set(`user:${newUser.id}`, JSON.stringify(newUser));
     await db.set(`user:email:${newUser.email}`, newUser.id);
 
-    console.log('User created:', newUser.email);
-
     return { message: "User created", userId: newUser.id };
   }, {
     body: t.Object({
@@ -35,7 +44,7 @@ export const authRoutes = new Elysia()
     })
   })
 
-  .post('/sign-in', async ({ body, set }) => {
+  .post('/sign-in', async ({ body, set, jwt, cookie: { auth } }) => {
     const userId = await db.get(`user:email:${body.email}`);
 
     if (!userId) {
@@ -57,8 +66,20 @@ export const authRoutes = new Elysia()
       return { error: 'Invalid email or password' };
     }
 
-    console.log('User logged in:', user.email);
-    return { message: "Login successful", userId: user.id, name: user.name };
+    const token = await jwt.sign({ id: user.id });
+
+    auth.set({
+      value: token,
+      httpOnly: true,
+      maxAge: 7 * 86400, // 7 days
+      path: '/',
+    });
+
+    return {
+      message: "Login successful",
+      userId: user.id,
+      name: user.name
+    };
   }, {
     body: t.Object({
       email: t.String(),
@@ -66,47 +87,28 @@ export const authRoutes = new Elysia()
     })
   })
 
-  .patch('/user', async ({ body, set }) => {
-    const userRaw = await db.get(`user:${body.userId}`);
+  .patch('/user', async ({ body, set, jwt, cookie: { auth } }) => {
+    const payload = await jwt.verify(auth.value);
 
+    if (!payload) {
+      set.status = 401;
+      return { error: 'Unauthorized' };
+    }
+
+    const userRaw = await db.get(`user:${payload.id}`);
     if (!userRaw) {
       set.status = 404;
       return { error: 'User not found' };
     }
 
     const oldUser: User = JSON.parse(userRaw);
-
-    const updatedUser: User = {
-      ...oldUser,
-      name: body.name ?? oldUser.name,
-    };
+    const updatedUser: User = { ...oldUser, name: body.name ?? oldUser.name };
 
     await db.set(`user:${updatedUser.id}`, JSON.stringify(updatedUser));
 
-    return { message: "User updated", user: updatedUser };
+    return { message: "User updated", user: { id: updatedUser.id, name: updatedUser.name } };
   }, {
     body: t.Object({
-      userId: t.String(),
       name: t.Optional(t.String()),
-    })
-  })
-
-  .delete('/user', async ({ body, set }) => {
-    const userRaw = await db.get(`user:${body.userId}`);
-
-    if (!userRaw) {
-      set.status = 404;
-      return { error: 'User not found' };
-    }
-
-    const user: User = JSON.parse(userRaw);
-
-    await db.del(`user:${user.id}`);
-    await db.del(`user:email:${user.email}`);
-
-    return { message: "User deleted successfully" };
-  }, {
-    body: t.Object({
-      userId: t.String()
     })
   });

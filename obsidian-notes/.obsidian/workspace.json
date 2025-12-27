@@ -31,10 +31,14 @@
             "id": "b6a5b95a1f855a05",
             "type": "leaf",
             "state": {
-              "type": "graph",
-              "state": {},
-              "icon": "lucide-git-fork",
-              "title": "Visualização de diagrama de grafo"
+              "type": "markdown",
+              "state": {
+                "file": "Segunda etapa Infraestrutura e Ambiente.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Segunda etapa Infraestrutura e Ambiente"
             }
           }
         ]
@@ -196,14 +200,15 @@
       "daily-notes:Abrir nota de hoje": false,
       "templates:Inserir templates": false,
       "command-palette:Abrir paleta de comando": false,
-      "bases:Create new base": false
+      "bases:Create new base": false,
+      "file-tree-generator:Generate file tree": false
     }
   },
   "active": "bcf3d0313125c4e8",
   "lastOpenFiles": [
+    "Etapas do Projeto.md",
     "Segunda etapa Infraestrutura e Ambiente.md",
     "Sem título.base",
-    "Etapas do Projeto.md",
     "Infraestrutura e Ambiente.md",
     "Primeira etapa Modelagem de Dados.md",
     "Modelagem de Dados.md"

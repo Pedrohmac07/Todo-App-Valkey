@@ -4,12 +4,18 @@
   "type": "module",
   "private": true,
   "workspaces": [
-    "packages/*"
+    "./packages/*"
   ],
+  "scripts": {
+    "start": "bun ./packages/backend/index.ts"
+  },
   "devDependencies": {
     "@types/bun": "latest"
   },
   "peerDependencies": {
     "typescript": "^5"
+  },
+  "dependencies": {
+    "elysia": "^1.4.19"
   }
 }

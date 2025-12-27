@@ -3,15 +3,16 @@
 | Verificar Valkey               | X   |
 | ------------------------------ | --- |
 | Ativar Valkey                  | X   |
-| Estrutura De arquivos iniciais |     |
-Alvo de estrutura de arquivos do banco de dados:
+| Estrutura De arquivos iniciais | X   |
+Alvo de estrutura de arquivos do repositorio:
 
-> [!folder-1]- todo-cache
-> > [!folder-2]- packages
-> > 📄 backend
-> > 📄 frontend
+
+> [!folder-1]- packages
+> > [!folder-2]- backend
+> > 📄 index.ts
 > 
-> 📄 package.json
 
+Ambiente Frameworks e ferramentas:
+Elysia
 
 

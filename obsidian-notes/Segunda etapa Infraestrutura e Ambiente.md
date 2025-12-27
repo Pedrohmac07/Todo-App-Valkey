@@ -47,11 +47,13 @@ Alvo de estrutura de arquivos do repositorio:
 > > > 
 > > 
 > 
+> 📄 .env
 > 📄 .gitignore
 > 📄 README.md
 > 📄 bun.lock
 > 📄 package.json
 > 📄 tsconfig.json
+
 
 
 

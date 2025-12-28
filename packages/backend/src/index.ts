@@ -1,8 +1,15 @@
 import { Elysia } from 'elysia';
-import { authRoutes } from './routes/auth.ts';
-import { tasksRoutes } from './routes/tasks.ts';
+import { cors } from '@elysiajs/cors';
+import { authRoutes } from './routes/auth';
+import { tasksRoutes } from './routes/tasks';
 
 const app = new Elysia()
+  .use(cors({
+    origin: 'process.env.CORS_ORIGIN',
+    credentials: true,
+    allowedHeaders: ['Content-Type', 'Authorization'],
+  }))
+
   .get('/', () => 'API cache running!')
 
   .use(authRoutes)

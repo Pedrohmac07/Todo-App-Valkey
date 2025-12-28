@@ -1,23 +1,20 @@
 {
   "name": "todo-cache",
-  "module": "index.ts",
-  "type": "module",
+  "version": "1.0.0",
   "private": true,
+  "description": "Monorepo para Todo-Cache com Bun e TypeScript",
   "workspaces": [
-    "./packages/*"
+    "packages/*"
   ],
   "scripts": {
-    "start": "bun ./packages/backend/src/index.ts"
+    "dev:backend": "bun --filter ./packages/backend dev",
+    "dev:frontend": "bun --filter ./packages/frontend dev",
+    "build:backend": "bun install --filter './packages/backend/' ",
+    "build:frontend": "bun install --filter './packages/frontend/' ",
+    "build:all": "bun install",
+    "clean": "rm -rf node_modules packages/*/node_modules"
   },
   "devDependencies": {
-    "@types/bun": "latest"
-  },
-  "peerDependencies": {
-    "typescript": "^5"
-  },
-  "dependencies": {
-    "@elysiajs/jwt": "^1.4.0",
-    "elysia": "^1.4.19",
-    "ioredis": "^5.8.2"
+    "typescript": "^5.0.0"
   }
 }

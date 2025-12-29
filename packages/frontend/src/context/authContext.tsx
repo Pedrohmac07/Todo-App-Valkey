@@ -13,6 +13,7 @@ interface AuthContextType {
   isLoading: boolean;
   login: (email: string, password: string) => Promise<void>;
   logout: () => void;
+  deleteAccount: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType>({} as AuthContextType);
@@ -37,13 +38,20 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const login = async (email: string, password: string) => {
-    const response = await api.post('/sign-in', { email, password });
 
-    setUser({
-      id: response.data.userId,
-      name: response.data.name,
-      email: email
-    });
+    try {
+      const response = await api.post('/sign-in', { email, password });
+
+      setUser({
+        id: response.data.userId,
+        name: response.data.name,
+        email: email
+      });
+
+    } catch (error) {
+      console.error('Context Error', error);
+      throw error;
+    }
   };
 
   const logout = async () => {
@@ -55,13 +63,24 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  const deleteAccount = async () => {
+    try {
+      await api.delete('/me');
+      setUser(null);
+    } catch (error) {
+      console.error("Failed to delete account", error);
+      throw error;
+    }
+  }
+
   return (
     <AuthContext.Provider value={{
       user,
       isAuthenticated: !!user,
       isLoading,
       login,
-      logout
+      logout,
+      deleteAccount
     }}>{children}</AuthContext.Provider>
   );
 };

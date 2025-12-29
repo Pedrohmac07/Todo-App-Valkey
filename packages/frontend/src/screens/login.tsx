@@ -5,6 +5,7 @@ import { toast } from 'sonner';
 import { Input } from '../components/Input'
 
 export default function Login() {
+
  const [email, setEmail] = useState('');
  const [password, setPassword] = useState('');
  const { login } = useAuth();
@@ -13,10 +14,10 @@ export default function Login() {
   e.preventDefault();
 
   try {
-   await login(email, password)
+   await login(email, password);
   } catch (err: any) {
-   const ErrorMessage = err.response?.data?.error || 'Failed to login';
 
+   const ErrorMessage = err.response?.data?.error || 'Failed to login';
    toast.error(ErrorMessage);
   }
  };

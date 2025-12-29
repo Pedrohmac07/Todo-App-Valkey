@@ -1,0 +1,21 @@
+.home-screen {
+ display: grid;
+ grid-template-rows: auto 1fr;
+ height: 100vh;
+ grid-template-columns: repeat(4, 1fr);
+ grid-template-areas:
+  'header header header header'
+  'left-sidebar main-content main-content main-content'
+}
+
+.home-screen>.header {
+ grid-area: header;
+}
+
+.home-screen>main {
+ grid-area: main-content;
+}
+
+.home-screen>section {
+ grid-area: left-sidebar;
+}

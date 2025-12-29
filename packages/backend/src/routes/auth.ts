@@ -140,6 +140,41 @@ export const authRoutes = new Elysia()
     };
   })
 
+  .delete('/me', async ({ jwt, cookie: { auth }, set }) => {
+    const payload = await jwt.verify(auth.value);
+    if (!payload) {
+      set.status = 401;
+      return { error: 'Unauthorized' };
+    }
+
+    const userId = payload.id;
+
+    const userRaw = await db.get(`user:${userId}`);
+    if (!userRaw) {
+      set.status = 404;
+      return { error: 'User not found' };
+    }
+    const user: User = JSON.parse(userRaw);
+
+    const taskIds = await db.smembers(`user:${userId}:tasks`);
+
+    if (taskIds.length > 0) {
+      for (const taskId of taskIds) {
+        await db.del(`task:${taskId}`);
+      }
+
+      await db.del(`user:${userId}:tasks`);
+    }
+
+    await db.del(`user:${userId}`);
+
+    await db.del(`user:email:${user.email}`);
+
+    auth.remove();
+
+    return { message: "Account and all associated data deleted successfully" };
+  })
+
   .post('sign-out', ({ cookie: { auth } }) => {
     auth?.remove();
 

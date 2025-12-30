@@ -1,18 +1,17 @@
 import { useState, useEffect } from 'react'
-import { Check } from 'lucide-react'
+import { Check, Trash2 } from 'lucide-react'
 import { useTasks } from '../context/taskContext'
 import { type Task } from '../interfaces/taskInterface'
 
 interface TaskEditorProps {
  selectedTask: Task | null;
- onTaskUpdated: (task: Task) => void; // Callback para avisar a Home que salvou
+ onTaskUpdated: (task: Task | null) => void;
 }
 
 export function TaskEditor({ selectedTask, onTaskUpdated }: TaskEditorProps) {
- const { updateTask } = useTasks();
+ const { updateTask, removeTask } = useTasks();
  const [draftTask, setDraftTask] = useState<Task | null>(null);
 
- // Sempre que a tarefa selecionada mudar (clique na sidebar), atualiza o rascunho
  useEffect(() => {
   if (selectedTask) {
    setDraftTask({ ...selectedTask });
@@ -20,6 +19,21 @@ export function TaskEditor({ selectedTask, onTaskUpdated }: TaskEditorProps) {
    setDraftTask(null);
   }
  }, [selectedTask]);
+
+ useEffect(() => {
+  const handleKeyDown = (e: KeyboardEvent) => {
+   if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+    e.preventDefault();
+    if (draftTask) {
+     handleSaveEdit();
+    }
+   }
+  };
+  window.addEventListener('keydown', handleKeyDown);
+  return () => {
+   window.removeEventListener('keydown', handleKeyDown);
+  };
+ }, [draftTask]);
 
  if (!selectedTask || !draftTask) {
   return (
@@ -43,33 +57,70 @@ export function TaskEditor({ selectedTask, onTaskUpdated }: TaskEditorProps) {
   onTaskUpdated(draftTask);
  }
 
+ async function handleDelete() {
+  if (!draftTask) return;
+
+  const confirmDelete = window.confirm("Are you sure you want to delete this task?");
+  if (confirmDelete) {
+   await removeTask(draftTask.id);
+   onTaskUpdated(null);
+  }
+ }
+
  return (
-  <main className='main content-center items-center flex flex-col p-4'>
+  <main className='main content-center items-center flex flex-col p-4 w-full overflow-hidden'>
+   {/* Adicionei w-full e overflow-hidden no main para garantir */}
+
    <div className="w-full h-full flex flex-col gap-4">
 
-    <div className="flex items-center gap-4 border-b-2 pb-4 border-gray-300">
+    {/* --- CABEÇALHO DO EDITOR --- */}
+    <div className="flex items-center gap-4 border-b-2 pb-4 border-gray-300 w-full">
 
+     {/* Checkbox: Adicionado shrink-0 para não amassar */}
      <div
-      className={`w-6 h-6 border-2 border-black cursor-pointer flex items-center justify-center ${draftTask.completed ? 'bg-green-200' : 'bg-transparent'}`}
+      className={`w-6 h-6 border-2 border-black cursor-pointer flex items-center justify-center shrink-0 ${draftTask.completed ? 'bg-green-200' : 'bg-transparent'}`}
       onClick={() => setDraftTask({ ...draftTask, completed: !draftTask.completed })}
      >
       {draftTask.completed && <Check className="w-4 h-4 text-black" />}
      </div>
 
+     {/* INPUT: 
+              - flex-1: Ocupa o espaço sobrando
+              - min-w-0: Permite diminuir além do tamanho do texto (CRUCIAL)
+              - truncate: Coloca o "..." se não couber
+          */}
      <input
       type="text"
-      className="text-2xl font-bold bg-transparent outline-none flex-1"
+      className="text-2xl font-bold bg-transparent outline-none flex-1 min-w-0 truncate"
       value={draftTask.title}
       onChange={(e) => setDraftTask({ ...draftTask, title: e.target.value })}
      />
 
-     {hasChanges && (
-      <button onClick={handleSaveEdit} className="bg-transparent! p-1!">
-       <div className="bg-green-500 rounded-full p-1 shadow-md hover:scale-110 transition-transform">
-        <Check className="text-white w-6 h-6" strokeWidth={3} />
+     {/* Botões: Adicionado shrink-0 para garantir que fiquem visíveis */}
+     <div className="flex gap-2 shrink-0">
+      {hasChanges && (
+       <button
+        onClick={handleSaveEdit}
+        className="bg-transparent! p-1!"
+        title="Save (Ctrl+S)"
+       >
+        <div className="bg-green-500 rounded-full p-1 shadow-md hover:scale-110 transition-transform">
+         <Check className="text-white w-6 h-6" strokeWidth={3} />
+        </div>
+       </button>
+      )}
+
+      <button
+       onClick={handleDelete}
+       className="bg-transparent! p-1!"
+       title="Delete Task"
+      >
+       <div className="bg-red-500 rounded-full p-1 shadow-md hover:scale-110 transition-transform">
+        <Trash2 className="text-white w-6 h-6" strokeWidth={2} />
        </div>
       </button>
-     )}
+     </div>
+
     </div>
 
     <textarea

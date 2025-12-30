@@ -16,19 +16,16 @@ function Home() {
 
    <Header />
 
-   {/* Sidebar controla a seleção e abre o modal */}
    <TaskSidebar
     onSelectTask={setSelectedTask}
     onOpenModal={() => setIsModalOpen(true)}
    />
 
-   {/* Editor recebe a tarefa selecionada */}
    <TaskEditor
     selectedTask={selectedTask}
-    onTaskUpdated={setSelectedTask} // Atualiza o "original" ao salvar
+    onTaskUpdated={(task) => setSelectedTask(task)}
    />
 
-   {/* Modal fica "flutuando" condicionalmente */}
    <CreateTaskModal
     isOpen={isModalOpen}
     onClose={() => setIsModalOpen(false)}

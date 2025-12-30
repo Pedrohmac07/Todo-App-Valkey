@@ -16,11 +16,8 @@ export function CreateTaskModal({ isOpen, onClose }: CreateTaskModalProps) {
  async function handleAddNew() {
   if (newTitle.trim() === '') return;
 
-  // Aqui poderiamos passar o completed se o backend aceitasse no POST, 
-  // mas mantendo seu padrao atual:
   await addTask(newTitle, newContent);
 
-  // Limpa e fecha
   setNewTitle('');
   setNewContent('');
   setNewIsCompleted(false);

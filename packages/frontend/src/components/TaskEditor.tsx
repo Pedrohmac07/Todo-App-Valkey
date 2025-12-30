@@ -69,14 +69,10 @@ export function TaskEditor({ selectedTask, onTaskUpdated }: TaskEditorProps) {
 
  return (
   <main className='main content-center items-center flex flex-col p-4 w-full overflow-hidden'>
-   {/* Adicionei w-full e overflow-hidden no main para garantir */}
-
    <div className="w-full h-full flex flex-col gap-4">
 
-    {/* --- CABEÇALHO DO EDITOR --- */}
     <div className="flex items-center gap-4 border-b-2 pb-4 border-gray-300 w-full">
 
-     {/* Checkbox: Adicionado shrink-0 para não amassar */}
      <div
       className={`w-6 h-6 border-2 border-black cursor-pointer flex items-center justify-center shrink-0 ${draftTask.completed ? 'bg-green-200' : 'bg-transparent'}`}
       onClick={() => setDraftTask({ ...draftTask, completed: !draftTask.completed })}
@@ -84,11 +80,6 @@ export function TaskEditor({ selectedTask, onTaskUpdated }: TaskEditorProps) {
       {draftTask.completed && <Check className="w-4 h-4 text-black" />}
      </div>
 
-     {/* INPUT: 
-              - flex-1: Ocupa o espaço sobrando
-              - min-w-0: Permite diminuir além do tamanho do texto (CRUCIAL)
-              - truncate: Coloca o "..." se não couber
-          */}
      <input
       type="text"
       className="text-2xl font-bold bg-transparent outline-none flex-1 min-w-0 truncate"
@@ -96,7 +87,6 @@ export function TaskEditor({ selectedTask, onTaskUpdated }: TaskEditorProps) {
       onChange={(e) => setDraftTask({ ...draftTask, title: e.target.value })}
      />
 
-     {/* Botões: Adicionado shrink-0 para garantir que fiquem visíveis */}
      <div className="flex gap-2 shrink-0">
       {hasChanges && (
        <button

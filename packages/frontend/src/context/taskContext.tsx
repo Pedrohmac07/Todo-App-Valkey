@@ -34,7 +34,7 @@ export const TaskProvider = ({ children }: { children: ReactNode }) => {
         setTasks(data);
       } catch (error) {
         console.error('Failed to load tasks', error);
-        setTasks([]); // Em caso de erro, garante lista vazia
+        setTasks([]);
       } finally {
         setIsLoading(false);
       }

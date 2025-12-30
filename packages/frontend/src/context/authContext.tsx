@@ -23,6 +23,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     checkAuth();
   }, []);
 
+
   const login = async (email: string, password: string) => {
 
     try {
@@ -59,6 +60,18 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   }
 
+  const signUp = async (name: string, email: string, password: string) => {
+    try {
+      await api.post('/sign-up', { name, email, password });
+      setUser(null)
+
+    } catch (error) {
+      console.error('Context Error', error);
+      throw error;
+    }
+
+  }
+
   return (
     <AuthContext.Provider value={{
       user,
@@ -66,7 +79,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       isLoading,
       login,
       logout,
-      deleteAccount
+      deleteAccount,
+      signUp
     }
     }> {children} </AuthContext.Provider>
   );

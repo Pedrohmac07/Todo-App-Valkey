@@ -3,9 +3,9 @@ import { useAuth } from '../context/authContext';
 import { toast } from 'sonner';
 
 import { Input } from '../components/Input'
+import { Link } from 'react-router-dom';
 
 export default function Login() {
-
  const [email, setEmail] = useState('');
  const [password, setPassword] = useState('');
  const { login } = useAuth();
@@ -40,6 +40,7 @@ export default function Login() {
     />
     <button type='submit' className='text-amber-50'>Sign In</button>
    </form>
+   <p><Link to="/sign-up">Doesn't have an Account? Sign Up.</Link></p>
   </div>
  )
 }

@@ -3,18 +3,21 @@ import { useAuth } from '../context/authContext';
 import { toast } from 'sonner';
 
 import { Input } from '../components/Input'
+import { Link } from 'react-router-dom';
 
-export default function SignUp() {
-
+export default function signUp() {
+ const [name, setName] = useState('');
  const [email, setEmail] = useState('');
  const [password, setPassword] = useState('');
- const { login } = useAuth();
+ const { signUp } = useAuth();
 
  const handleSubmit = async (e: React.FormEvent) => {
   e.preventDefault();
 
   try {
-   await login(email, password);
+   await signUp(name, email, password);
+
+   toast.success("Created Account");
   } catch (err: any) {
 
    const ErrorMessage = err.response?.data?.error || 'Failed to login';
@@ -24,22 +27,29 @@ export default function SignUp() {
 
  return (
   <div className='grid grid-cols-1 gap-10'>
-   <h2 className='p-10 text-4xl font-bold'>Login</h2>
+   <h2 className='p-10 text-4xl font-bold'>Sign Up</h2>
    <form onSubmit={handleSubmit} className='grid grid-cols-1 gap-10'>
     <Input
+     type="text"
+     placeholder='Insert UserName'
+     value={name}
+     onChange={e => setName(e.target.value)}
+    />
+    <Input
      type="email"
-     placeholder='Email'
+     placeholder='Insert Email'
      value={email}
      onChange={e => setEmail(e.target.value)}
     />
     <Input
      type='password'
-     placeholder='Password'
+     placeholder='Insert Password'
      value={password}
      onChange={e => setPassword(e.target.value)}
     />
-    <button type='submit' className='text-amber-50'>Sign In</button>
+    <button type='submit' className='text-amber-50'>Create Account</button>
    </form>
+   <p><Link to="/login">Already have an Account? Login.</Link></p>
   </div>
  )
 }

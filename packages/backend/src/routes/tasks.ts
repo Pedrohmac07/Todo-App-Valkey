@@ -54,11 +54,12 @@ export const tasksRoutes = new Elysia({ prefix: '/tasks' })
 
   .post('/', async ({ body, userId }) => {
     const taskId = crypto.randomUUID();
+    
     const newTask: Task = {
       id: taskId,
       title: body.title,
       content: body.content,
-      completed: false,
+      completed: body.completed ?? false, 
       createdAt: Date.now(),
       userId: userId
     };
@@ -70,11 +71,12 @@ export const tasksRoutes = new Elysia({ prefix: '/tasks' })
   }, {
     body: t.Object({
       title: t.String(),
-      content: t.String()
+      content: t.String(),
+      completed: t.Optional(t.Boolean()) 
     })
   })
 
-  .patch('/:id', async ({ params: { id }, userId, set }) => {
+  .patch('/:id', async ({ params: { id }, body, userId, set }) => {
     const rawTask = await db.get(`task:${id}`);
     if (!rawTask) {
       set.status = 404;
@@ -88,9 +90,20 @@ export const tasksRoutes = new Elysia({ prefix: '/tasks' })
       return { error: "Forbidden: This task is not yours" };
     }
 
-    task.completed = !task.completed;
+
+    // verify in the body what was changed, if wasnt it keeps the old one
+    if (body.title !== undefined) task.title = body.title;
+    if (body.content !== undefined) task.content = body.content;
+    if (body.completed !== undefined) task.completed = body.completed;
+
     await db.set(`task:${id}`, JSON.stringify(task));
     return task;
+  }, {
+    body: t.Object({
+        title: t.Optional(t.String()),
+        content: t.Optional(t.String()),
+        completed: t.Optional(t.Boolean())
+    })
   })
 
   .delete('/:id', async ({ params: { id }, userId, set }) => {
@@ -112,4 +125,3 @@ export const tasksRoutes = new Elysia({ prefix: '/tasks' })
 
     return { message: "Deleted", id };
   })
-

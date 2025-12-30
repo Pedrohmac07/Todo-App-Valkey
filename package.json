@@ -1,8 +1,8 @@
 {
-  "name": "todo-cache",
+  "name": "todo-app",
   "version": "1.0.0",
   "private": true,
-  "description": "Monorepo para Todo-Cache com Bun e TypeScript",
+  "description": "Monorepository of a Todo App using Valkey/Redis",
   "workspaces": [
     "packages/*"
   ],

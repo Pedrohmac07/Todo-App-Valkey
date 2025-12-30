@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import Home from './screens/home'
 import Login from './screens/login'
+import SignUp from './screens/signUp';
 import { Profile } from './screens/profile';
 
 import ProtectedRoutes from './utils/ProtectedRoutes';
@@ -23,6 +24,7 @@ function App() {
           <Routes>
             <Route element={<PublicRoutes />} >
               <Route element={<Login />} path='/login' />
+              <Route element={<SignUp />} path={'/sign-up'} />
             </Route>
 
             <Route element={<ProtectedRoutes />}>

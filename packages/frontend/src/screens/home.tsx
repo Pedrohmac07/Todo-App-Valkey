@@ -1,36 +1,39 @@
-import { UserRound, Logs } from 'lucide-react'
-import { useNavigate } from 'react-router-dom'
+import { useState } from 'react'
 import './home.css'
 
+import { Header } from '../components/Header'
+import { TaskSidebar } from '../components/TaskSideBar'
+import { TaskEditor } from '../components/TaskEditor'
+import { CreateTaskModal } from '../components/CreateTaskModal'
+import { type Task } from '../interfaces/taskInterface'
+
 function Home() {
-
- const navigate = useNavigate()
-
- const handleProfileButton = () => {
-  navigate('/profile')
- }
+ const [isModalOpen, setIsModalOpen] = useState(false);
+ const [selectedTask, setSelectedTask] = useState<Task | null>(null);
 
  return (
-  <div className="home-screen w-screen h-screen">
-   <header className="header w-full p-2 border-b-2 flex" >
-    <button className='bg-transparent! p-2! border-2! border-gray-600!'>
-     <Logs className='w-10 h-10' strokeWidth={1.5} />
-    </button>
-    <h2 className="text-2xl m-auto font-bold">Your Profile Page</h2>
-    <button className="bg-transparent! p-2!" onClick={handleProfileButton}>
-     <UserRound className="w-10 h-10" strokeWidth={1.5} />
-    </button>
-   </header>
+  <div className="home-screen w-screen h-screen relative">
 
-   <section className='left-sidebar border-r-2 '>
-    <ol>
-     <li>Teste</li>
-    </ol>
-   </section>
+   <Header />
 
-   <main className='main content-center items-center'>
-    <h2>Select a Task in the sidebar to view it here!</h2>
-   </main>
+   {/* Sidebar controla a seleção e abre o modal */}
+   <TaskSidebar
+    onSelectTask={setSelectedTask}
+    onOpenModal={() => setIsModalOpen(true)}
+   />
+
+   {/* Editor recebe a tarefa selecionada */}
+   <TaskEditor
+    selectedTask={selectedTask}
+    onTaskUpdated={setSelectedTask} // Atualiza o "original" ao salvar
+   />
+
+   {/* Modal fica "flutuando" condicionalmente */}
+   <CreateTaskModal
+    isOpen={isModalOpen}
+    onClose={() => setIsModalOpen(false)}
+   />
+
   </div>
  )
 }

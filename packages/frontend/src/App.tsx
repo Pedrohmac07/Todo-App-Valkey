@@ -7,25 +7,30 @@ import { Profile } from './screens/profile';
 
 import ProtectedRoutes from './utils/ProtectedRoutes';
 import PublicRoutes from './utils/PublicRoutes'
-import { AuthProvider } from './context/authContext';
 import { Toaster } from 'sonner'
+
+import { AuthProvider } from './context/authContext';
+import { TaskProvider } from './context/taskContext';
 
 function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
-        <Toaster richColors position='top-left' />
+        <TaskProvider>
 
-        <Routes>
-          <Route element={<PublicRoutes />} >
-            <Route element={<Login />} path='/login' />
-          </Route>
+          <Toaster richColors position='top-left' />
 
-          <Route element={<ProtectedRoutes />}>
-            <Route element={<Home />} path='/' />
-            <Route element={<Profile />} path='/profile' />
-          </Route>
-        </Routes>
+          <Routes>
+            <Route element={<PublicRoutes />} >
+              <Route element={<Login />} path='/login' />
+            </Route>
+
+            <Route element={<ProtectedRoutes />}>
+              <Route element={<Home />} path='/' />
+              <Route element={<Profile />} path='/profile' />
+            </Route>
+          </Routes>
+        </TaskProvider>
       </AuthProvider>
     </BrowserRouter>
   )

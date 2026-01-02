@@ -74,6 +74,7 @@ export const authRoutes = new Elysia()
       value: token,
       httpOnly: true,
       secure: isProduction,
+      sameSite: 'none',
       maxAge: 7 * 86400, // 7 days
       path: '/',
     });

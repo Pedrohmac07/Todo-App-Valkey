@@ -13,7 +13,11 @@ export const tasksRoutes = new Elysia({ prefix: '/tasks' })
       })
     })
   )
-  .derive(async ({ jwt, cookie: { auth }, set }) => {
+  .derive(async ({ jwt, cookie: { auth }, set, request }) => {
+    if (request.method === 'OPTIONS') {
+      return { userId: ''};
+    }
+
     const payload = await jwt.verify(auth.value);
     if (!payload) {
       set.status = 401;
